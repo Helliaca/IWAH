@@ -23,19 +23,23 @@ void time(std::string context) {
 }
 
 void parse() {
-	std::ifstream infile("thefile.txt");
+	std::ifstream infile("sample_60k.cnf");
 	std::string line;
 	maxlit = 0;
 	while (std::getline(infile, line))
 	{
 		std::istringstream is(line);
-		int n;
+		std::string in;
 		unsigned int rule = 0, flip = 0;
-		while (is >> n) {
-			if (n == 0) break;
-			if (abs(n) > maxlit) maxlit = abs(n);
-			rule += pow(2, abs(n) - 1);
-			if (n < 0) flip += pow(2, abs(n) - 1);
+		while (is >> in) {
+			if (in=="c" || in=="%" || in=="0") break;
+			else {
+				int n = std::atoi(in.c_str());
+				if (n == 0) break;
+				if (abs(n) > maxlit) maxlit = abs(n);
+				rule += pow(2, abs(n) - 1);
+				if (n < 0) flip += pow(2, abs(n) - 1);
+			}
 		}
 		if (rule != 0) {
 			rules.push_back(rule);
@@ -135,12 +139,17 @@ int main() {
 	//Retrieve result
 	glBindTexture(GL_TEXTURE_2D, ret_tex);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT); //Explicit Synchronization, as ImageStore is not always memory coherent
+	glFinish(); //Block main thread until rendering is complete to get accurate time measurements
 	time("Render time");
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, result); //Retrieve image data from GPU
 	time("Result retrieval");
 
+	//Misc. Output
+	print("Total literals: " + std::to_string(maxlit));
+	print("Total rules: " + std::to_string(rules.size()));
+	print("Total cells: " + std::to_string(max_val));
 	if (result[0] != 0) print("Result: SATISFIABLE");
-	else print("Result: SATISFIABLE");
+	else print("Result: UNSATISFIABLE");
 
 	//Destroy redundat objects and exit
 	glDeleteVertexArrays(1, &VAO);
