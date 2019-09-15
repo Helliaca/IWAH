@@ -22,7 +22,7 @@ void time(std::string context) {
 }
 
 void parse() {
-	std::ifstream infile("sample_60k.cnf");
+	std::ifstream infile("samples/sample_60k.cnf");
 	std::string line;
 	maxlit = 0;
 	while (std::getline(infile, line))
