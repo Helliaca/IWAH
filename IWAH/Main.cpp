@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
-#include<cmath>
+#include <cmath>
 #include <vector>
 
 std::vector<int> rules;
