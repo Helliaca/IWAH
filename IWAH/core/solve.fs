@@ -16,10 +16,7 @@ bool check(uint rule, uint flip, uint alloc) {
 
 void main()
 {
-	int ycoord = int(gl_FragCoord.y);
-	int xcoord = int(gl_FragCoord.x);
-
-	uint val = ycoord * dim_x + xcoord;
+	uint val = int(gl_FragCoord.y) * dim_x + int(gl_FragCoord.x);
 
 	for(int i=0; i<rules_size; i++) {
 		if(!check(texelFetch( rules, i ).r, texelFetch( flips, i ).r, val)) return;
