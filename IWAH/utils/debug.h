@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <string>
 
 void print(std::string s) {
 	std::cout << s << std::endl;

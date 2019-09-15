@@ -1,10 +1,9 @@
-#include "core/Shader.h"
-#include "core/debug.h"
+#include "utils/shader.h"
+#include "utils/debug.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
 #include <stdlib.h>
 #include <cmath>
 #include <vector>
