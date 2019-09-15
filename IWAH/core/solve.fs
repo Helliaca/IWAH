@@ -2,7 +2,7 @@
 
 out vec4 FragColor;
 
-#define RULES_CAP 100
+#define RULES_CAP 200
 uniform int rules_size;
 uniform int dim_x;
 uniform int[RULES_CAP] rules;
@@ -11,8 +11,7 @@ uniform int[RULES_CAP] flips;
 layout(RGBA8) uniform image2D tex2D;
 
 bool check(int rule, int flip, int alloc) {
-	alloc = alloc ^ flip;
-	alloc = rule & alloc;
+	alloc = rule & (alloc ^ flip);
 	return alloc != 0;
 }
 
@@ -26,5 +25,5 @@ void main()
 	for(int i=0; i<rules_size; i++) {
 		if(!check(rules[i], flips[i], val)) return;
 	}
-	imageStore(tex2D, ivec2(0.0f), vec4(val/255.0f));
+	imageStore(tex2D, ivec2(0.0f), vec4(1.0f));
 }
