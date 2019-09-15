@@ -2,17 +2,16 @@
 
 out vec4 FragColor;
 
-#define RULES_CAP 200
 uniform int rules_size;
 uniform int dim_x;
-uniform int[RULES_CAP] rules;
-uniform int[RULES_CAP] flips;
+uniform usamplerBuffer rules;
+uniform usamplerBuffer flips;
 
-layout(RGBA8) uniform image2D tex2D;
+layout(RGBA8) uniform image2D ret;
 
-bool check(int rule, int flip, int alloc) {
+bool check(uint rule, uint flip, uint alloc) {
 	alloc = rule & (alloc ^ flip);
-	return alloc != 0;
+	return alloc > 0;
 }
 
 void main()
@@ -20,10 +19,10 @@ void main()
 	int ycoord = int(gl_FragCoord.y);
 	int xcoord = int(gl_FragCoord.x);
 
-	int val = ycoord * dim_x + xcoord;
+	uint val = ycoord * dim_x + xcoord;
 
 	for(int i=0; i<rules_size; i++) {
-		if(!check(rules[i], flips[i], val)) return;
+		if(!check(texelFetch( rules, i ).r, texelFetch( flips, i ).r, val)) return;
 	}
-	imageStore(tex2D, ivec2(0.0f), vec4(1.0f));
+	imageStore(ret, ivec2(0.0f), vec4(1.0f));
 }
